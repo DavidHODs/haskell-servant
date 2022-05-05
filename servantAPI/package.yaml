@@ -24,6 +24,21 @@ dependencies:
 - servant-server
 - time
 - text
+- servant
+- blaze-html
+- aeson
+- blaze-markup
+- directory
+- warp
+- wai
+- http-media
+- lucid
+- string-conversions
+- bytestring
+- attoparsec
+- mtl
+- base-compat-batteries
+
 
 library:
   source-dirs: src

@@ -25,17 +25,32 @@ source-repository head
 
 library
   exposed-modules:
+      Api.Server
       Lib
-      Model.Api
+      Model.Data
   other-modules:
       Paths_servantAPI
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-compat-batteries
+    , blaze-html
+    , blaze-markup
+    , bytestring
+    , directory
+    , http-media
+    , lucid
+    , mtl
+    , servant
     , servant-server
+    , string-conversions
     , text
     , time
+    , wai
+    , warp
   default-language: Haskell2010
 
 executable servantAPI-exe
@@ -46,11 +61,25 @@ executable servantAPI-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-compat-batteries
+    , blaze-html
+    , blaze-markup
+    , bytestring
+    , directory
+    , http-media
+    , lucid
+    , mtl
+    , servant
     , servant-server
     , servantAPI
+    , string-conversions
     , text
     , time
+    , wai
+    , warp
   default-language: Haskell2010
 
 test-suite servantAPI-test
@@ -62,9 +91,23 @@ test-suite servantAPI-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-compat-batteries
+    , blaze-html
+    , blaze-markup
+    , bytestring
+    , directory
+    , http-media
+    , lucid
+    , mtl
+    , servant
     , servant-server
     , servantAPI
+    , string-conversions
     , text
     , time
+    , wai
+    , warp
   default-language: Haskell2010
