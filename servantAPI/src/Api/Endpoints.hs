@@ -1,11 +1,14 @@
 module Api.Endpoints 
-    (users, user1, user2, emailForClient, position, hello) where
+    (users, user1, user2, emailForClient, position, hello, marketing) where
 
-import Server
+import Servant
+import Data.List
+import Data.Time.Calendar
+import GHC.Generics
 
-import qualified Model.Data as Data (User, ClientInfo, Email, Position, Email, HelloMessage)
+import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..))
 
-users :: [User]
+users :: [Data.User]
 users =
     [
     user1,
@@ -23,12 +26,12 @@ emailForClient :: Data.ClientInfo -> Data.Email
 emailForClient c = Data.Email from' to' subject' body'
     where
     from' = "test@io.com"
-    to' = clientEmail c
-    subject' = "Hi " ++ clientName c ++ "\n\n"
-    body' = "Hey " ++ clientName c ++ ", checking up on you!!"
-                ++ " Since you've recently turned " ++ show (clientAge c)
+    to' = Data.clientEmail c
+    subject' = "Hi " ++ Data.clientName c ++ "\n\n"
+    body' = "Hey " ++ Data.clientName c ++ ", checking up on you!!"
+                ++ " Since you've recently turned " ++ show (Data.clientAge c)
                 ++ ", have you checked out our latest "
-                ++ intercalate ", " (clientInterestedIn c)
+                ++ intercalate ", " (Data.clientInterestedIn c)
                 ++ " products? Give us a visit!"
 
 position :: Int -> Int -> Handler Data.Position

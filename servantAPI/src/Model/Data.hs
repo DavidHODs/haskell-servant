@@ -1,5 +1,5 @@
 module Model.Data 
-  ( Position, HelloMessage, ClientInfo, Email )
+  ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..) )
    where
 
 import Data.Text ()
