@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Unused LANGUAGE pragma" #-}
 
-module Api.Server where
+module Api.Server (app) where
 
 import Prelude ()
 import Prelude.Compat
@@ -27,3 +27,20 @@ import Text.Blaze.Html.Renderer.Utf8
 import Servant.Types.SourceT (source)
 import qualified Data.Aeson.Parser
 import Text.Blaze.Html
+
+import qualified Model.Data as Data (User, users1)
+
+type UserAPIOne = "users" :> Get '[JSON] [Data.User]
+
+data SortBy = Age | Name
+
+server1 :: Server UserAPIOne
+server1 = return Data.users1
+
+userAPI :: Proxy UserAPIOne
+userAPI = Proxy
+
+app :: Application
+app = serve userAPI server1
+
+
