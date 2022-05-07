@@ -8,4 +8,3 @@ main :: IO ()
 main = do
     putStrLn "server running on port 8080"
     run 8080 Server.app
-

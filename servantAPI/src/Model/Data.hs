@@ -1,5 +1,6 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-module Model.Data ( User, users1 ) where
+module Model.Data 
+  ( Position, HelloMessage, ClientInfo, Email )
+   where
 
 import Data.Text ()
 import Data.Time.Calendar
@@ -7,17 +8,44 @@ import GHC.Generics
 import Data.Aeson
 
 data User = User {
-    name :: String,
-    age :: Int,
-    email :: String,
-    registration_date :: Day
+  name :: String,
+  age :: Int,
+  email :: String,
+  registration_date :: Day
 } deriving (Eq, Show, Generic)
-
 instance ToJSON User
 
-users1 :: [User]
-users1 =
-    [
-        User "Isaac Clemence" 372 "IsaacClemence@test.io" (fromGregorian 1683 3 1), 
-        User "Albert Greg" 136 "mc2@newton.uk" (fromGregorian 1905 12 1)
-    ]
+data Position = Position 
+  {
+    xCoord :: Int,
+    yCoord :: Int
+  } deriving (Eq, Show, Generic)
+instance ToJSON Position
+
+newtype HelloMessage = HelloMessage 
+  {
+    msg :: String
+  } deriving (Show, Eq, Generic)
+
+instance ToJSON HelloMessage
+
+data ClientInfo = ClientInfo 
+  {
+    clientName :: String,
+    clientEmail :: String,
+    clientAge :: Int,
+    clientInterestedIn :: [String]
+  } deriving (Generic, Eq, Show)
+
+instance ToJSON ClientInfo
+instance FromJSON ClientInfo
+
+data Email = Email 
+  {
+    from :: String,
+    to :: String,
+    subject :: String,
+    body :: String
+  } deriving (Generic, Eq, Show)
+  
+instance ToJSON Email

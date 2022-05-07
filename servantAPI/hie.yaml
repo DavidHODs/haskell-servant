@@ -1,0 +1,13 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "servantAPI:lib"
+
+    - path: "./app/Main.hs"
+      component: "servantAPI:exe:servantAPI-exe"
+
+    - path: "./app/Paths_servantAPI.hs"
+      component: "servantAPI:exe:servantAPI-exe"
+
+    - path: "./test"
+      component: "servantAPI:test:servantAPI-test"
