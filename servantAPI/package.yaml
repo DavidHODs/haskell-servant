@@ -39,6 +39,18 @@ dependencies:
 - mtl
 - base-compat-batteries
 
+default-extensions:
+- DeriveGeneric
+- DataKinds 
+- DeriveGeneric
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- MultiParamTypeClasses
+- OverloadedStrings
+- RankNTypes
+- ScopedTypeVariables
+- TypeOperators
+- ExplicitNamespaces
 
 library:
   source-dirs: src

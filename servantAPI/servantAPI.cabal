@@ -32,6 +32,18 @@ library
       Paths_servantAPI
   hs-source-dirs:
       src
+  default-extensions:
+      DeriveGeneric
+      DataKinds
+      DeriveGeneric
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      MultiParamTypeClasses
+      OverloadedStrings
+      RankNTypes
+      ScopedTypeVariables
+      TypeOperators
+      ExplicitNamespaces
   build-depends:
       aeson
     , attoparsec
@@ -59,6 +71,18 @@ executable servantAPI-exe
       Paths_servantAPI
   hs-source-dirs:
       app
+  default-extensions:
+      DeriveGeneric
+      DataKinds
+      DeriveGeneric
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      MultiParamTypeClasses
+      OverloadedStrings
+      RankNTypes
+      ScopedTypeVariables
+      TypeOperators
+      ExplicitNamespaces
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -89,6 +113,18 @@ test-suite servantAPI-test
       Paths_servantAPI
   hs-source-dirs:
       test
+  default-extensions:
+      DeriveGeneric
+      DataKinds
+      DeriveGeneric
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      MultiParamTypeClasses
+      OverloadedStrings
+      RankNTypes
+      ScopedTypeVariables
+      TypeOperators
+      ExplicitNamespaces
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
