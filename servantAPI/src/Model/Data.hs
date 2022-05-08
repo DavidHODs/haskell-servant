@@ -1,5 +1,5 @@
 module Model.Data 
-  ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..) )
+  ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..), FileContent(..) )
    where
 
 import Data.Text ()
@@ -49,3 +49,11 @@ data Email = Email
   } deriving (Generic, Eq, Show)
   
 instance ToJSON Email
+
+newtype FileContent = FileContent
+  {
+    content :: String
+  } deriving Generic
+
+instance ToJSON FileContent
+instance FromJSON FileContent

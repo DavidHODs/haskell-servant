@@ -1,12 +1,14 @@
 module Api.Endpoints 
-    (users, user1, user2, position, hello, marketing) where
+    (users, user1, user2, position, hello, marketing, getFileContent) where
 
 import Servant
 import Data.List
 import Data.Time.Calendar
 import GHC.Generics
+import Data.Maybe
+import Control.Monad.Reader
 
-import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..))
+import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..), FileContent(..))
 import qualified Api.Controllers as Controllers (emailForClient)
 
 users :: [Data.User]
@@ -32,4 +34,8 @@ hello mname = return . Data.HelloMessage $ case mname of
 
 marketing :: Data.ClientInfo -> Handler Data.Email
 marketing ci = return (Controllers.emailForClient ci)
- 
+
+getFileContent :: IO Data.FileContent
+getFileContent = do
+    fileContent <- liftIO (readFile "dummy.txt")
+    return (Data.FileContent fileContent)

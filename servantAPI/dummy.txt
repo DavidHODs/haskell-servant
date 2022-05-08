@@ -55,7 +55,7 @@ server2 = EndPoints.position
         :<|> EndPoints.marketing
 
 server3 :: Server FileContentAPI
-server3 = liftIO EndPoints.getFileContent
+server3 = Endpoints.getFileContent
 
 userAPI :: Proxy UserAPI
 userAPI = Proxy
