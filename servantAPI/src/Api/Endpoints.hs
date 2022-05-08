@@ -1,5 +1,5 @@
 module Api.Endpoints 
-    (users, user1, user2, position, hello, marketing, getFileContent) where
+    (users, user1, user2, position, hello, marketing, getFileContent, createFileContent) where
 
 import Servant
 import Data.List
@@ -9,7 +9,7 @@ import Data.Maybe
 import Control.Monad.Reader
 
 import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..), FileContent(..))
-import qualified Api.Controllers as Controllers (emailForClient)
+import qualified Api.Controllers as Controllers (emailForClient, writeContent)
 
 users :: [Data.User]
 users =
@@ -35,7 +35,14 @@ hello mname = return . Data.HelloMessage $ case mname of
 marketing :: Data.ClientInfo -> Handler Data.Email
 marketing ci = return (Controllers.emailForClient ci)
 
-getFileContent :: IO Data.FileContent
+getFileContent :: IO [Data.FileContent]
 getFileContent = do
-    fileContent <- liftIO (readFile "dummy.txt")
-    return (Data.FileContent fileContent)
+    fileContent1 <- liftIO (readFile "dummy.txt")
+    fileContent2 <- liftIO (readFile "file.txt")
+    return [
+        Data.FileContent fileContent1,
+        Data.FileContent fileContent2
+        ]
+
+createFileContent :: String -> Data.FileContent
+createFileContent = Controllers.writeContent
