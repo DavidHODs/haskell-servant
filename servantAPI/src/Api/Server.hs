@@ -41,8 +41,9 @@ type PositionMarketingAPI = "position" :> Capture "x" Int :> Capture "y" Int :> 
     :<|> "hello" :> QueryParam "name" String :> Get '[JSON] Data.HelloMessage
     :<|> "marketing" :> ReqBody '[JSON] Data.ClientInfo :> Post '[JSON] Data.Email
 
-type FileContentAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
-                    -- :<|> "create" :> "file.txt" :> ReqBody '[JSON] Data.FileContent :> Post '[JSON] Data.FileContent
+type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
+
+type FileContentAPI = "create" :> "files.txt" :> ReqBody '[JSON] Data.FileContent :> Post '[JSON] Data.FileContent
 
 
 server1 :: Server UserAPI
@@ -55,9 +56,11 @@ server2 = EndPoints.position
         :<|> EndPoints.hello
         :<|> EndPoints.marketing
 
-server3 :: Server FileContentAPI
+server3 :: Server FileContentIOAPI
 server3 = liftIO EndPoints.getFileContent
-        -- :<|> EndPoints.createFileContent
+
+server4 :: Server FileContentAPI
+server4 = EndPoints.createFileContent
 
 userAPI :: Proxy UserAPI
 userAPI = Proxy
@@ -65,8 +68,11 @@ userAPI = Proxy
 posMarAPI :: Proxy PositionMarketingAPI
 posMarAPI = Proxy
 
+fileContentIOAPI :: Proxy FileContentIOAPI
+fileContentIOAPI = Proxy
+
 fileContentAPI :: Proxy FileContentAPI
 fileContentAPI = Proxy
 
 app :: Application
-app = serve fileContentAPI server3
+app = serve fileContentAPI server4

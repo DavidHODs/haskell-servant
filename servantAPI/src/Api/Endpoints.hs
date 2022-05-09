@@ -44,5 +44,8 @@ getFileContent = do
         Data.FileContent fileContent2
         ]
 
+-- createFileContent :: String -> Data.FileContent
+-- createFileContent con = Controllers.writeContent con
+
 createFileContent :: String -> Data.FileContent
-createFileContent = Controllers.writeContent
+createFileContent con = return Data.FileContent con
