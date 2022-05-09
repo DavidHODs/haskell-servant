@@ -1,5 +1,5 @@
 module Api.Endpoints 
-    (users, user1, user2, position, hello, marketing, getFileContent, createFileContent) where
+    (users, user1, user2, position, hello, marketing, getFileContent, createFileContent, getFileContentError) where
 
 import Servant
 import Data.List
@@ -8,8 +8,8 @@ import GHC.Generics
 import Data.Maybe
 import Control.Monad.Reader
 
-import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..), FileContent(..))
-import qualified Api.Controllers as Controllers (emailForClient, writeContent)
+import qualified Model.Data as Data (User(..), ClientInfo(..), Email(..), Position(..), Email(..), HelloMessage(..), FileContent(..), ServerErrors(..))
+import qualified Api.Controllers as Controllers (emailForClient, writeContent, endpointError)
 
 users :: [Data.User]
 users =
@@ -44,8 +44,15 @@ getFileContent = do
         Data.FileContent fileContent2
         ]
 
+getFileContentError :: IO Data.ServerErrors
+getFileContentError = do
+    exists <- liftIO doesFileExist "myfilez.txt"
+    if exists
+        then liftIO (readFile "myfilez.txt") >>= (\content -> return content . Data.FileContent content)
+        else throwError controllers.endpointError 500 "endpoint not available" _
+
 -- createFileContent :: String -> Data.FileContent
 -- createFileContent con = Controllers.writeContent con
 
 createFileContent :: String -> Data.FileContent
-createFileContent con = return Data.FileContent con
+createFileContent = return Data.FileContent

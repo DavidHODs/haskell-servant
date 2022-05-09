@@ -1,11 +1,13 @@
 module Model.Data 
-  ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..), FileContent(..) )
+  ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..), FileContent(..), ServerErrors(..) )
    where
 
 import Data.Text ()
 import Data.Time.Calendar
 import GHC.Generics
 import Data.Aeson
+import Servant
+import Data.ByteString
 
 data User = User {
   name :: String,
@@ -57,3 +59,10 @@ newtype FileContent = FileContent
 
 instance ToJSON FileContent
 instance FromJSON FileContent
+
+data ServerErrors = ServerErrors
+  {
+    errHTTPCode :: Int,
+    errResponseString :: String,
+    errBody :: ByteString
+  } deriving (Generic, Show)

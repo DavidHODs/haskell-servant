@@ -29,7 +29,7 @@ import qualified Data.Aeson.Parser
 import Text.Blaze.Html
 
 import qualified Model.Data as Data (User, ClientInfo, HelloMessage, Email, Position, FileContent)
-import qualified Api.Endpoints as EndPoints (users, user1, user2, hello, marketing, position, getFileContent, createFileContent)
+import qualified Api.Endpoints as EndPoints (users, user1, user2, hello, marketing, position, getFileContent, createFileContent, getFileContentError)
 
 type UserAPI = "users" :> Get '[JSON] [Data.User]
     :<|> "user1" :> Get '[JSON] Data.User
@@ -45,6 +45,7 @@ type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
 
 type FileContentAPI = "create" :> "files.txt" :> ReqBody '[JSON] Data.FileContent :> Post '[JSON] Data.FileContent
 
+type FileContentError = "get" :> "errorfile" :> Get '[JSON] [Data.FileContent]
 
 server1 :: Server UserAPI
 server1 = return EndPoints.users
@@ -62,6 +63,9 @@ server3 = liftIO EndPoints.getFileContent
 server4 :: Server FileContentAPI
 server4 = EndPoints.createFileContent
 
+server5 = Server FileContentError
+server5 = EndPoints.getFileContentError
+
 userAPI :: Proxy UserAPI
 userAPI = Proxy
 
@@ -74,5 +78,8 @@ fileContentIOAPI = Proxy
 fileContentAPI :: Proxy FileContentAPI
 fileContentAPI = Proxy
 
+fileContentError :: Proxy FileContentError
+fileContentError = Proxy
+
 app :: Application
-app = serve fileContentAPI server4
+app = serve fileContentError server5
