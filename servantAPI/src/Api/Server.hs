@@ -107,15 +107,4 @@ streamAPI :: Proxy StreamAPI
 streamAPI = Proxy
 
 app :: Application
-app = serve streamAPI (return server8)
-
-
--- type StreamAPI = "userStream" :> StreamGet NewlineFraming JSON (SourceIO User)
--- streamAPI :: Proxy StreamAPI
--- streamAPI = Proxy
-
--- streamUsers :: SourceIO User
--- streamUsers = source [isaac, albert, albert]
-
--- app6 :: Application
--- app6 = serve streamAPI (return streamUsers)
+app = serve proxyAPI combinedServer
