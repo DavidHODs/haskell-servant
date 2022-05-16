@@ -47,6 +47,12 @@ type ResponseHeaderAPI = Capture "optional-header" Bool :> Get '[JSON] (Headers 
 
 type StaticAPI = "static" :> Raw
 
+type CombinedAPI = UserAPI 
+                :<|> PositionMarketingAPI 
+                :<|> FileContentIOAPI 
+                :<|> ResponseHeaderAPI 
+                :<|> StaticAPI
+
 server1 :: Server UserAPI
 server1 = return EndPoints.users
     :<|> return EndPoints.user1
@@ -67,6 +73,13 @@ server6 x = return $ if x then addHeader 420 EndPoints.pos1
 server7 :: Server StaticAPI
 server7 = serveDirectoryWebApp "static"
 
+combinedServer :: Server CombinedAPI
+combinedServer = server1
+                :<|> server2
+                :<|> server3
+                :<|> server6
+                :<|> server7
+
 userAPI :: Proxy UserAPI
 userAPI = Proxy
 
@@ -82,8 +95,11 @@ responseHeaderAPI = Proxy
 staticAPI :: Proxy StaticAPI
 staticAPI = Proxy
 
+proxyAPI :: Proxy CombinedAPI
+proxyAPI = Proxy
+
 app :: Application
-app = serve staticAPI server7
+app = serve proxyAPI combinedServer
 
 
 
