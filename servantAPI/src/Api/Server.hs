@@ -43,7 +43,7 @@ type PositionMarketingAPI = "position" :> Capture "x" Int :> Capture "y" Int :> 
 
 type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
 
-type ResponseHeaderAPI = Get '[JSON] (Headers '[Header "Test-Header" Int] Data.Position)
+type ResponseHeaderAPI = Capture "optional-header" Bool :> Get '[JSON] (Headers '[Header "Test-Header" Int] Data.Position)
 
 server1 :: Server UserAPI
 server1 = return EndPoints.users
@@ -59,7 +59,8 @@ server3 :: Server FileContentIOAPI
 server3 = liftIO EndPoints.getFileContent
 
 server6 :: Server ResponseHeaderAPI
-server6 = return $ addHeader 420 EndPoints.pos1
+server6 x = return $ if x then addHeader 420 EndPoints.pos1
+                          else noHeader EndPoints.pos1
 
 userAPI :: Proxy UserAPI
 userAPI = Proxy
