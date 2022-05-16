@@ -45,6 +45,8 @@ type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
 
 type ResponseHeaderAPI = Capture "optional-header" Bool :> Get '[JSON] (Headers '[Header "Test-Header" Int] Data.Position)
 
+type StaticAPI = "static" :> Raw
+
 server1 :: Server UserAPI
 server1 = return EndPoints.users
     :<|> return EndPoints.user1
@@ -62,6 +64,9 @@ server6 :: Server ResponseHeaderAPI
 server6 x = return $ if x then addHeader 420 EndPoints.pos1
                           else noHeader EndPoints.pos1
 
+server7 :: Server StaticAPI
+server7 = serveDirectoryWebApp "static"
+
 userAPI :: Proxy UserAPI
 userAPI = Proxy
 
@@ -74,5 +79,26 @@ fileContentIOAPI = Proxy
 responseHeaderAPI :: Proxy ResponseHeaderAPI
 responseHeaderAPI = Proxy
 
+staticAPI :: Proxy StaticAPI
+staticAPI = Proxy
+
 app :: Application
-app = serve responseHeaderAPI server6
+app = serve staticAPI server7
+
+
+
+
+
+-- type StaticAPI = "static" :> Raw
+
+-- And the server:
+
+-- staticAPI :: Proxy StaticAPI
+-- staticAPI = Proxy
+
+-- server7 :: Server StaticAPI
+-- server7 = serveDirectoryWebApp "static-files"
+
+-- app3 :: Application
+-- app3 = serve staticAPI server7
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Haskell Servant</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+                module Model.Data 
+        ( User(..), Position(..), HelloMessage(..), ClientInfo(..), Email(..), FileContent(..) )
+        where
+
+        import Data.Text ()
+        import Data.Time.Calendar
+        import GHC.Generics
+        import Data.Aeson
+        </br>
+        data User = User {
+        name :: String,
+        age :: Int,
+        email :: String,
+        registration_date :: Day
+        } deriving (Eq, Show, Generic)
+        instance ToJSON User
+
+        <p>
+        data Position = Position 
+        {
+            xCoord :: Int,
+            yCoord :: Int
+        } deriving (Eq, Show, Generic)
+        instance ToJSON Position
+        </p>
+
+        </br>
+        newtype HelloMessage = HelloMessage 
+        {
+            msg :: String
+        } deriving (Show, Eq, Generic)
+
+        instance ToJSON HelloMessage
+
+        data ClientInfo = ClientInfo 
+        {
+            clientName :: String,
+            clientEmail :: String,
+            clientAge :: Int,
+            clientInterestedIn :: [String]
+        } deriving (Generic, Eq, Show)
+
+        instance ToJSON ClientInfo
+        instance FromJSON ClientInfo
+
+        data Email = Email 
+        {
+            from :: String,
+            to :: String,
+            subject :: String,
+            body :: String
+        } deriving (Generic, Eq, Show)
+        
+        instance ToJSON Email
+
+        newtype FileContent = FileContent
+        {
+            content :: String
+        } deriving Generic
+
+        instance ToJSON FileContent
+        instance FromJSON FileContent
+        
+        <script src="" async defer></script>
+    </body>
+</html>
