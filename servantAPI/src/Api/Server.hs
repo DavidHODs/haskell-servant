@@ -29,7 +29,7 @@ import qualified Data.Aeson.Parser
 import Text.Blaze.Html
 
 import qualified Model.Data as Data (User, ClientInfo, HelloMessage, Email, Position, FileContent)
-import qualified Api.Endpoints as EndPoints (users, user1, user2, hello, marketing, position, getFileContent, createFileContent, getFileContentError)
+import qualified Api.Endpoints as EndPoints (users, user1, user2, hello, marketing, position, getFileContent, pos1)
 
 type UserAPI = "users" :> Get '[JSON] [Data.User]
     :<|> "user1" :> Get '[JSON] Data.User
@@ -43,9 +43,7 @@ type PositionMarketingAPI = "position" :> Capture "x" Int :> Capture "y" Int :> 
 
 type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
 
-type FileContentAPI = "create" :> "files.txt" :> ReqBody '[JSON] Data.FileContent :> Post '[JSON] Data.FileContent
-
-type FileContentError = "get" :> "errorfile" :> Get '[JSON] [Data.FileContent]
+type ResponseHeaderAPI = Get '[JSON] (Headers '[Header "Test-Header" Int] Data.Position)
 
 server1 :: Server UserAPI
 server1 = return EndPoints.users
@@ -60,11 +58,8 @@ server2 = EndPoints.position
 server3 :: Server FileContentIOAPI
 server3 = liftIO EndPoints.getFileContent
 
-server4 :: Server FileContentAPI
-server4 = EndPoints.createFileContent
-
-server5 = Server FileContentError
-server5 = EndPoints.getFileContentError
+server6 :: Server ResponseHeaderAPI
+server6 = return $ addHeader 420 EndPoints.pos1
 
 userAPI :: Proxy UserAPI
 userAPI = Proxy
@@ -75,11 +70,8 @@ posMarAPI = Proxy
 fileContentIOAPI :: Proxy FileContentIOAPI
 fileContentIOAPI = Proxy
 
-fileContentAPI :: Proxy FileContentAPI
-fileContentAPI = Proxy
-
-fileContentError :: Proxy FileContentError
-fileContentError = Proxy
+responseHeaderAPI :: Proxy ResponseHeaderAPI
+responseHeaderAPI = Proxy
 
 app :: Application
-app = serve fileContentError server5
+app = serve responseHeaderAPI server6
