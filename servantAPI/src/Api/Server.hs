@@ -45,7 +45,9 @@ type FileContentIOAPI = "get" :> "files.txt" :> Get '[JSON] [Data.FileContent]
 
 type ResponseHeaderAPI = Capture "optional-header" Bool :> Get '[JSON] (Headers '[Header "Test-Header" Int] Data.Position)
 
-type StaticAPI = "static" :> Raw
+type StaticAPI = "static" :> Raw 
+
+type StreamAPI = "user-data" :> StreamGet NewlineFraming JSON (SourceIO Data.User)
 
 type CombinedAPI = UserAPI 
                 :<|> PositionMarketingAPI 
@@ -73,6 +75,9 @@ server6 x = return $ if x then addHeader 420 EndPoints.pos1
 server7 :: Server StaticAPI
 server7 = serveDirectoryWebApp "static"
 
+server8 :: SourceIO Data.User
+server8 = source [EndPoints.user1, EndPoints.user2]
+
 combinedServer :: Server CombinedAPI
 combinedServer = server1
                 :<|> server2
@@ -98,23 +103,19 @@ staticAPI = Proxy
 proxyAPI :: Proxy CombinedAPI
 proxyAPI = Proxy
 
+streamAPI :: Proxy StreamAPI
+streamAPI = Proxy
+
 app :: Application
-app = serve proxyAPI combinedServer
+app = serve streamAPI (return server8)
 
 
+-- type StreamAPI = "userStream" :> StreamGet NewlineFraming JSON (SourceIO User)
+-- streamAPI :: Proxy StreamAPI
+-- streamAPI = Proxy
 
+-- streamUsers :: SourceIO User
+-- streamUsers = source [isaac, albert, albert]
 
-
--- type StaticAPI = "static" :> Raw
-
--- And the server:
-
--- staticAPI :: Proxy StaticAPI
--- staticAPI = Proxy
-
--- server7 :: Server StaticAPI
--- server7 = serveDirectoryWebApp "static-files"
-
--- app3 :: Application
--- app3 = serve staticAPI server7
-
+-- app6 :: Application
+-- app6 = serve streamAPI (return streamUsers)
